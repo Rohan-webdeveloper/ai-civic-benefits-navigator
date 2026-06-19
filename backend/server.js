@@ -90,4 +90,10 @@ const startServer = async () => {
   }
 };
 
-startServer();
+if (require.main === module) {
+  startServer();
+} else {
+  connectDB().then(() => seedBenefits()).catch(err => console.error('Database connection error in serverless environment:', err));
+}
+
+module.exports = app;
