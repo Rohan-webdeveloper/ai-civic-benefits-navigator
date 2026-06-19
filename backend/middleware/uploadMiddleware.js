@@ -3,9 +3,25 @@ const path = require('path');
 const fs = require('fs');
 
 // Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
+let uploadsDir = path.join(__dirname, '..', 'uploads');
+if (process.env.VERCEL) {
+  uploadsDir = path.join('/tmp', 'uploads');
+}
+
+try {
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
+} catch (error) {
+  console.warn('Warning: Could not create uploads directory, falling back to /tmp/uploads:', error.message);
+  uploadsDir = path.join('/tmp', 'uploads');
+  try {
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+  } catch (err) {
+    console.error('Critical: Could not create fallback /tmp/uploads directory:', err.message);
+  }
 }
 
 // Configure storage

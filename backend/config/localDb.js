@@ -2,24 +2,55 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+let DATA_DIR = path.join(__dirname, '..', 'data');
+const ORIGINAL_DATA_DIR = path.join(__dirname, '..', 'data');
+
+// If running on Vercel, use /tmp/data which is writeable
+if (process.env.VERCEL) {
+  DATA_DIR = path.join('/tmp', 'data');
+}
+
+try {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+} catch (error) {
+  console.warn('Warning: Could not create local data directory, falling back to /tmp/data:', error.message);
+  DATA_DIR = path.join('/tmp', 'data');
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+  } catch (err) {
+    console.error('Critical: Could not create fallback /tmp/data directory:', err.message);
+  }
 }
 
 const getFilePath = (collectionName) => path.join(DATA_DIR, `${collectionName.toLowerCase()}s.json`);
+const getOriginalFilePath = (collectionName) => path.join(ORIGINAL_DATA_DIR, `${collectionName.toLowerCase()}s.json`);
 
 const readData = (collectionName) => {
   const filePath = getFilePath(collectionName);
-  if (!fs.existsSync(filePath)) {
-    return [];
+  // Try reading from the active writeable DATA_DIR first
+  if (fs.existsSync(filePath)) {
+    try {
+      return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    } catch (error) {
+      console.error(`Error reading ${collectionName} mock data from ${filePath}:`, error);
+    }
   }
-  try {
-    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  } catch (error) {
-    console.error(`Error reading ${collectionName} mock data:`, error);
-    return [];
+
+  // Fallback to reading the original read-only template data
+  const originalFilePath = getOriginalFilePath(collectionName);
+  if (fs.existsSync(originalFilePath)) {
+    try {
+      return JSON.parse(fs.readFileSync(originalFilePath, 'utf8'));
+    } catch (error) {
+      console.error(`Error reading original template ${collectionName} data:`, error);
+    }
   }
+
+  return [];
 };
 
 const writeData = (collectionName, data) => {
