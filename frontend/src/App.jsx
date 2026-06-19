@@ -10,6 +10,7 @@ import EligibilityCheck from './pages/EligibilityCheck';
 import AIHelp from './pages/AIHelp';
 import MyApplications from './pages/MyApplications';
 import AdminDashboard from './pages/AdminDashboard';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -51,6 +52,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MyApplications />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
                 </ProtectedRoute>
               }
             />

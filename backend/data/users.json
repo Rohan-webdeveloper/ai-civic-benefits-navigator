@@ -1,0 +1,28 @@
+[
+  {
+    "name": "rohan",
+    "email": "rohansingh2@gmail.com",
+    "password": "$2a$10$.Duq6lyg3TZG3qTIoxIu9.GxJICflFC40g41bm9fHYK9OF4255ovy",
+    "role": "user",
+    "_id": "fec3fadad4a2803e369156dc",
+    "createdAt": "2026-06-19T17:53:14.997Z",
+    "updatedAt": "2026-06-19T17:53:14.997Z"
+  },
+  {
+    "name": "Rohan Singh",
+    "email": "rohans05682@gmail.com",
+    "password": "$2a$10$HsiaohCwh4erOPXnYbxw5OKBhCKF/gBlErMK8AlidjyA/8dOOorHa",
+    "role": "user",
+    "_id": "36e0bd26feda06aa772b2940",
+    "createdAt": "2026-06-19T17:55:42.489Z",
+    "updatedAt": "2026-06-19T17:55:42.489Z",
+    "phone": "01234579876",
+    "age": "45",
+    "income": "200000",
+    "state": "Chhattisgarh",
+    "category": "obc",
+    "isStudent": false,
+    "isUnemployed": true,
+    "isDisabled": false
+  }
+]

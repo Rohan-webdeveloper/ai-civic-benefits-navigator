@@ -89,4 +89,52 @@ const getProfile = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getProfile };
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+const updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.phone = req.body.phone !== undefined ? req.body.phone : user.phone;
+      user.age = req.body.age !== undefined ? req.body.age : user.age;
+      user.income = req.body.income !== undefined ? req.body.income : user.income;
+      user.state = req.body.state !== undefined ? req.body.state : user.state;
+      user.category = req.body.category !== undefined ? req.body.category : user.category;
+      user.isStudent = req.body.isStudent !== undefined ? req.body.isStudent : user.isStudent;
+      user.isUnemployed = req.body.isUnemployed !== undefined ? req.body.isUnemployed : user.isUnemployed;
+      user.isDisabled = req.body.isDisabled !== undefined ? req.body.isDisabled : user.isDisabled;
+
+      if (req.body.password) {
+        user.password = req.body.password;
+      }
+
+      const updatedUser = await user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        phone: updatedUser.phone,
+        age: updatedUser.age,
+        income: updatedUser.income,
+        state: updatedUser.state,
+        category: updatedUser.category,
+        isStudent: updatedUser.isStudent,
+        isUnemployed: updatedUser.isUnemployed,
+        isDisabled: updatedUser.isDisabled,
+      });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Update profile error:', error.message);
+    res.status(500).json({ message: 'Server error updating profile' });
+  }
+};
+
+module.exports = { register, login, getProfile, updateProfile };

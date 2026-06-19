@@ -72,4 +72,5 @@ const benefitSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('Benefit', benefitSchema);
+const createModelProxy = require('../config/modelWrapper');
+module.exports = createModelProxy('Benefit', benefitSchema);

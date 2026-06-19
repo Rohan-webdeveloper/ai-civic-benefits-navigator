@@ -35,6 +35,9 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/documents', documentRoutes);
 
+// Serve static assets from frontend
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({
@@ -42,6 +45,11 @@ app.get('/api/health', (req, res) => {
     message: 'AI Civic Benefits Navigator API is running',
     timestamp: new Date().toISOString(),
   });
+});
+
+// React fallback router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
 // Error handling middleware

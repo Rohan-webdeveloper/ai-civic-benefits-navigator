@@ -1,0 +1,19 @@
+[
+  {
+    "user": "36e0bd26feda06aa772b2940",
+    "benefit": "e384b01c07245225cee99bbd",
+    "answers": {},
+    "status": "submitted",
+    "timeline": [
+      {
+        "status": "submitted",
+        "note": "Application submitted successfully",
+        "updatedBy": "Rohan Singh",
+        "date": "2026-06-19T17:56:06.420Z"
+      }
+    ],
+    "_id": "e9e1ea3c95eaa51e51af5091",
+    "createdAt": "2026-06-19T17:56:06.420Z",
+    "updatedAt": "2026-06-19T17:56:06.420Z"
+  }
+]

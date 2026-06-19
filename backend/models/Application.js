@@ -76,4 +76,5 @@ const applicationSchema = new mongoose.Schema(
 // Prevent duplicate applications
 applicationSchema.index({ user: 1, benefit: 1 }, { unique: true });
 
-module.exports = mongoose.model('Application', applicationSchema);
+const createModelProxy = require('../config/modelWrapper');
+module.exports = createModelProxy('Application', applicationSchema);
